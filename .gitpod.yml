@@ -1,0 +1,89 @@
+## gitpod-enhanced: sveltekit config <https://git.io/gitpod>
+
+image: nberlette/gitpod-enhanced:latest
+
+tasks:
+  - before: >- # install our package's dependencies
+      pnpm install
+    command: >- # start up the dev server
+      pnpm run dev
+  - init: >- # install global binaries (deploy, lint, etc.)
+      (
+        pnpm install --global miniflare@next wrangler@beta vercel &&
+        pnpm install --global pnpm prisma tsm typescript tslib &&
+        brew install --upgrade gh supabase/tap/supabase
+      ) > /dev/null
+
+ports:
+  - port: 3000-5000
+    onOpen: notify
+    visibility: public
+
+github:
+  prebuilds:
+    master: true
+    branches: true
+    pullRequests: true
+    pullRequestsFromForks: false
+    addCheck: true
+    addBadge: true
+    addLabel: true
+
+gitConfig:
+  commit.gpgsign: "true"
+  tag.gpgsign: "true"
+  init.defaultBranch: "main"
+  github.user: "svelterun"
+  user.name: "Nicholas Berlette"
+  user.email: nick@berlette.com
+  user.signingkey: 90805b121be520a6
+  alias.amend: "!git log -n 1 --pretty=tformat:%s%n%n%b | git commit -F - --amend"
+  alias.log-g: "!git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative"
+  alias.log-v: "!git log -n 1 -p --format=fuller"
+  alias.aliases: "!git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\      => \\2/' | sort"
+  core.excludesfile: "~/.gitconfig"
+  color.ui: auto
+  color.branch.current: "yellow reverse"
+  color.branch.local: "yellow"
+  color.branch.remote: "green"
+  color.diff.meta: "yellow bold"
+  color.diff.frag: "magenta bold"
+  color.diff.old: "red bold"
+  color.diff.new: "green bold"
+  color.status.added: "yellow"
+  color.status.changed: "green"
+  color.status.untracked: "red"
+  bash.showdirtystate: "1"
+  bash.showstashstate: "1"
+  bash.showuntrackedfiles: "1"
+  bash.showupstream: ""
+  bash.showcolorhints: "true"
+  init.defaultbranch: main
+  url.https://github.com.insteadOf: "github:"
+  url.https://github.com/.insteadOf: "gh:"
+  url.https://gist.github.com/.insteadOf: "gist:"
+  url.https://gitlab.com.insteadOf: "gitlab:"
+  url.https://gitlab.com/.insteadOf: "gl:"
+
+vscode:
+  extensions:
+    - svelte.vscode-svelte
+    - rafaelmartinez.svelte-preview
+    - fivethree.vscode-svelte-snippets
+    - nickscialli.svelte-dark
+    - idleberg.svg-icons
+    - jock.svg
+    - editorconfig.editorconfig
+    - ibm.output-colorizer
+    - johnpapa.vscode-peacock
+    - dbaeumer.vscode-eslint
+    - eamodio.gitlens
+    - cschleiden.vscode-github-actions
+    - yzhang.markdown-all-in-one
+    - jacano.vscode-pnpm
+    - gamunu.vscode-yarn
+    - eg2.vscode-npm-script
+    - christian-kohler.npm-intellisense
+    - christian-kohler.path-intellisense
+    - voorjaar.windicss-intellisense
+    - mrmlnc.vscode-scss
